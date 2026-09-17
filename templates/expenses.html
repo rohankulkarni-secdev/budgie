@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logs · Budgie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F3ECDF;
+    --bg-deep: #E7DCC4;
+    --ink: #362F24;
+    --ink-soft: #6B5F4C;
+    --sage: #7C8A5C;
+    --sage-soft: #97A375;
+    --rust: #B5694A;
+    --thread: #C9BFA6;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Work Sans', -apple-system, sans-serif;
+    padding: 48px 20px 80px;
+    position: relative;
+  }
+
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
+    background-size: 22px 22px;
+    opacity: 0.035;
+  }
+
+  .page{
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  a.back{
+    display: inline-block;
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-bottom: 18px;
+    border-bottom: 1px dashed var(--thread);
+    padding-bottom: 2px;
+  }
+  a.back:hover{ color: var(--sage); border-color: var(--sage-soft); }
+
+  h1{
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 4vw, 2.2rem);
+    margin: 0 0 6px;
+  }
+
+  .lede{
+    color: var(--ink-soft);
+    font-size: 0.96rem;
+    margin: 0 0 28px;
+    max-width: 46ch;
+    line-height: 1.5;
+  }
+
+  /* ---------- form panel ---------- */
+
+  .panel{
+    background: var(--bg-deep);
+    border: 1px solid var(--thread);
+    border-radius: 20px;
+    padding: 26px 28px;
+    margin-bottom: 44px;
+  }
+
+  .panel h2{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.15rem;
+    margin: 0 0 18px;
+  }
+
+  form{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px 14px;
+    align-items: end;
+  }
+
+  label{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+
+  label:nth-child(4){ grid-column: span 2; }
+
+  select, input[type="number"], input[type="text"]{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--thread);
+    border-radius: 10px;
+    padding: 9px 10px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  select:focus, input:focus{
+    border-color: var(--sage);
+  }
+
+  button{
+    grid-column: span 1;
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    background: var(--sage);
+    color: var(--bg);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+  button:hover{ background: #6d7a4f; }
+  button:active{ transform: scale(0.98); }
+
+  @media (max-width: 640px){
+    form{ grid-template-columns: 1fr 1fr; }
+    label:nth-child(4){ grid-column: span 2; }
+    button{ grid-column: span 2; }
+  }
+
+  /* ---------- category sections ---------- */
+
+  .section-title{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.4rem;
+    margin: 0 0 22px;
+  }
+
+  .category-block{
+    margin-bottom: 30px;
+  }
+
+  .category-head{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px dashed var(--thread);
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+  }
+
+  .category-head h3{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.05rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--sage-soft);
+    display: inline-block;
+  }
+
+  .subtotal{
+    font-size: 0.85rem;
+    color: var(--rust);
+    font-weight: 500;
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  th{
+    text-align: left;
+    font-weight: 500;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    padding: 6px 8px;
+  }
+
+  td{
+    padding: 9px 8px;
+    border-top: 1px solid var(--thread);
+    color: var(--ink);
+  }
+
+  tr:hover td{ background: rgba(124, 138, 92, 0.06); }
+
+  .empty{
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    font-style: italic;
+    padding: 20px 0;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="/">&larr; back to budgie</a>
+
+  <div class="panel">
+    <h2>Log an expense</h2>
+    <form method="POST" action="{{ url_for('expenses') }}">
+      <label>Category
+        <select name="category" required>
+          <option value="Food">Food</option>
+          <option value="Rent">Rent</option>
+          <option value="Transport">Transport</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Groceries">Groceries</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+
+      <label>Amount
+        <input type="number" step="0.01" name="amount" required>
+      </label>
+
+      <label>Currency
+        <select name="currency">
+          <option value="EUR">EUR</option>
+          <option value="INR">INR</option>
+        </select>
+      </label>
+
+      <label>Note
+        <input type="text" name="note" placeholder="optional">
+      </label>
+
+      <button type="submit">Add expense</button>
+    </form>
+  </div>
+
+  <h1 class="section-title">Your expenses</h1>
+
+  {% for category, items in grouped.items() %}
+    <div class="category-block">
+      <div class="category-head">
+        <h3><span class="dot"></span>{{ category }}</h3>
+        <span class="subtotal">{{ items | sum(attribute='amount') | round(2) }}</span>
+      </div>
+      <table>
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Currency</th>
+          <th>Note</th>
+        </tr>
+        {% for e in items %}
+        <tr>
+          <td>{{ e['date'] }}</td>
+          <td>{{ e['amount'] }}</td>
+          <td>{{ e['currency'] }}</td>
+          <td>{{ e['note'] }}</td>
+          <td><form method="POST" action="{{ url_for('delete_expense', expense_id=e['id']) }}" style="display:inline;">
+        <button type="submit" class="delete-btn" title="Delete this entry">&times;</button>
+      </form></td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% else %}
+    <p class="empty">Nothing logged yet — add your first expense above.</p>
+  {% endfor %}
+
+</div>
+</body>
+</html>

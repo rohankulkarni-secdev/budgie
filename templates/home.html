@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Budgie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F3ECDF;
+    --bg-deep: #E7DCC4;
+    --ink: #362F24;
+    --ink-soft: #6B5F4C;
+    --sage: #7C8A5C;
+    --sage-soft: #97A375;
+    --rust: #B5694A;
+    --thread: #C9BFA6;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Work Sans', -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+    padding: 40px 20px;
+  }
+
+  /* faint paper-grain texture, keeps the beige from feeling flat */
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
+    background-size: 22px 22px;
+    opacity: 0.035;
+  }
+
+  .brand{
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .brand h1{
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    margin: 0;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+
+  .brand p{
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    margin: 6px 0 0;
+    max-width: 34ch;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+
+  /* ---------- the wheel ---------- */
+
+  .wheel-wrap{
+    position: relative;
+    width: min(420px, 82vw);
+    height: min(420px, 82vw);
+    margin: 48px auto 20px;
+  }
+
+  .thread{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 1px;
+    width: 38%;
+    background-image: repeating-linear-gradient(
+      to right, var(--thread) 0 6px, transparent 6px 11px
+    );
+    transform-origin: left center;
+    opacity: 0;
+  }
+  .thread.n{ transform: rotate(-90deg) translateY(0); }
+  .thread.e{ transform: rotate(0deg); }
+  .thread.s{ transform: rotate(90deg); }
+  .thread.w{ transform: rotate(180deg); }
+
+  .hub{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 42%;
+    height: 42%;
+    transform: translate(-50%, -50%) scale(0.85);
+    border-radius: 50%;
+    background: var(--bg-deep);
+    border: 1px solid var(--thread);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10%;
+    opacity: 0;
+    animation: hub-breathe 6s ease-in-out infinite;
+  }
+
+  .hub-text{
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    transition: opacity 0.25s ease;
+  }
+
+  .hub-text .hub-title{
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.15rem;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .node{
+    position: absolute;
+    width: 108px;
+    height: 108px;
+    margin: -54px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid var(--sage-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 8px;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .node.top{    top: 0;   left: 50%; }
+  .node.right{  top: 50%; left: 100%; }
+  .node.bottom{ top: 100%;left: 50%; }
+  .node.left{   top: 50%; left: 0; }
+
+  .node:hover, .node:focus-visible{
+    border-color: var(--sage);
+    background: var(--bg-deep);
+    box-shadow: 0 4px 18px rgba(54, 47, 36, 0.12);
+    outline: none;
+  }
+
+  .node:focus-visible{
+    box-shadow: 0 0 0 3px rgba(124, 138, 92, 0.35);
+  }
+
+  /* ---------- entrance choreography ---------- */
+
+  @media (prefers-reduced-motion: no-preference){
+    .thread{ animation: thread-in 0.7s ease forwards; }
+    .thread.n{ animation-delay: 0.15s; }
+    .thread.e{ animation-delay: 0.3s; }
+    .thread.s{ animation-delay: 0.45s; }
+    .thread.w{ animation-delay: 0.6s; }
+
+    .node{ animation: node-in 0.6s cubic-bezier(.2,.8,.3,1.1) forwards; }
+    .node.top{ animation-delay: 0.35s; }
+    .node.right{ animation-delay: 0.5s; }
+    .node.bottom{ animation-delay: 0.65s; }
+    .node.left{ animation-delay: 0.8s; }
+
+    .hub{ animation: hub-in 0.6s ease forwards, hub-breathe 6s ease-in-out 1s infinite; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .thread, .node, .hub{ opacity: 1; transform: none; animation: none; }
+  }
+
+  @keyframes thread-in{
+    from{ opacity: 0; }
+    to{ opacity: 1; }
+  }
+
+  @keyframes node-in{
+    from{ opacity: 0; transform: scale(0.6); }
+    to{ opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes hub-in{
+    from{ opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+    to{ opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+
+  @keyframes hub-breathe{
+    0%, 100%{ transform: translate(-50%, -50%) scale(1); }
+    50%{ transform: translate(-50%, -50%) scale(1.03); }
+  }
+
+  footer{
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 12px;
+    opacity: 0.8;
+  }
+
+  /* ---------- mobile: wheel becomes a stacked list ---------- */
+
+  @media (max-width: 640px){
+    .wheel-wrap{
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 36px auto 16px;
+    }
+    .thread{ display: none; }
+    .hub{
+      position: static;
+      width: 100%;
+      height: auto;
+      transform: none !important;
+      animation: none !important;
+      opacity: 1;
+      padding: 18px;
+      margin-bottom: 4px;
+    }
+    .node{
+      position: static;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      border-radius: 16px;
+      padding: 16px;
+      opacity: 1;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="brand">
+    <h1>budgie</h1>
+    <p>Settle in. We'll help you find your footing — money, paperwork, and everything in between.</p>
+  </div>
+
+  <div class="wheel-wrap">
+    <div class="thread n"></div>
+    <div class="thread e"></div>
+    <div class="thread s"></div>
+    <div class="thread w"></div>
+
+    <div class="hub">
+      <div class="hub-text" id="hubText">
+        <span class="hub-title">budgie</span>
+        Pick a place to start.
+      </div>
+    </div>
+
+    <a href="/insights" class="node top" data-title="Insights" data-desc="See where your spending adds up, and where it doesn't need to.">Insights</a>
+    <a href="/log" class="node right" data-title="Logs" data-desc="Every expense, sorted and searchable by category.">Logs</a>
+    <a href="/dashboard" class="node bottom" data-title="Dashboard" data-desc="Your month at a glance — balance, trends, and what's left.">Dashboard</a>
+    <a href="/help" class="node left" data-title="Help!" data-desc="Country-specific guidance — visas, university steps, local rules.">Help!</a>
+  </div>
+
+  <footer>made for students finding their way</footer>
+
+  <script>
+    const hubText = document.getElementById('hubText');
+    const defaultHTML = hubText.innerHTML;
+    const nodes = document.querySelectorAll('.node');
+
+    nodes.forEach(node => {
+      const show = () => {
+        hubText.style.opacity = 0;
+        setTimeout(() => {
+          hubText.innerHTML = `<span class="hub-title">${node.dataset.title}</span>${node.dataset.desc}`;
+          hubText.style.opacity = 1;
+        }, 120);
+      };
+      const hide = () => {
+        hubText.style.opacity = 0;
+        setTimeout(() => {
+          hubText.innerHTML = defaultHTML;
+          hubText.style.opacity = 1;
+        }, 120);
+      };
+      node.addEventListener('mouseenter', show);
+      node.addEventListener('focus', show);
+      node.addEventListener('mouseleave', hide);
+      node.addEventListener('blur', hide);
+    });
+  </script>
+
+</body>
+</html>
