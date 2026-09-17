@@ -5,6 +5,7 @@ A budget and settling-in companion for international students — track your exp
 ## Features
 
 - **Logs** — log expenses by category (Food, Rent, Transport, Entertainment, Groceries, Other), with support for EUR and INR
+
   ----------- YET TO BE WORKED ON -----------------
 - **Dashboard** — a monthly overview of your spending and balance
 - **Insights** — see which categories are eating your budget and what to consider cutting
