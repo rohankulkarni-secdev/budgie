@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in · Budgie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F3ECDF;
+    --bg-deep: #E7DCC4;
+    --ink: #362F24;
+    --ink-soft: #6B5F4C;
+    --sage: #7C8A5C;
+    --sage-soft: #97A375;
+    --rust: #B5694A;
+    --thread: #C9BFA6;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Work Sans', -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+  }
+
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
+    background-size: 22px 22px;
+    opacity: 0.035;
+  }
+
+  .card{
+    width: 100%;
+    max-width: 440px;
+    background: var(--bg-deep);
+    border: 1px solid var(--thread);
+    border-radius: 22px;
+    padding: 38px 34px;
+    position: relative;
+  }
+
+  .brand{
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .brand h1{
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: 1.9rem;
+    margin: 0;
+  }
+
+  .brand p{
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    margin: 6px 0 26px;
+  }
+
+  fieldset{
+    border: none;
+    padding: 0;
+    margin: 0 0 20px;
+  }
+
+  legend{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--ink);
+    padding: 0 0 10px;
+    border-bottom: 1px dashed var(--thread);
+    width: 100%;
+    margin-bottom: 14px;
+  }
+
+  label{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+
+  .row-2{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  input[type="email"], input[type="password"], select{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--thread);
+    border-radius: 10px;
+    padding: 10px 11px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  input:focus, select:focus{ border-color: var(--sage); }
+
+  .currency-hint{
+    font-size: 0.75rem;
+    color: var(--sage);
+    margin-top: 4px;
+    min-height: 1em;
+  }
+
+  .toggle-group{
+    display: flex;
+    gap: 10px;
+  }
+
+  .toggle-option{
+    flex: 1;
+    position: relative;
+  }
+
+  .toggle-option input{
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+  }
+
+  .toggle-option span{
+    display: block;
+    text-align: center;
+    padding: 10px 8px;
+    border-radius: 10px;
+    border: 1px solid var(--thread);
+    background: var(--bg);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    transition: all 0.2s ease;
+  }
+
+  .toggle-option input:checked + span{
+    background: var(--sage);
+    border-color: var(--sage);
+    color: var(--bg);
+  }
+
+  button[type="submit"]{
+    width: 100%;
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1rem;
+    background: var(--sage);
+    color: var(--bg);
+    border: none;
+    border-radius: 12px;
+    padding: 13px;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+  button[type="submit"]:hover{ background: #6d7a4f; }
+  button[type="submit"]:active{ transform: scale(0.99); }
+
+  .footnote{
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-top: 18px;
+  }
+
+  @media (max-width: 480px){
+    .row-2{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">
+    <h1>budgie</h1>
+    <p>Tell us a little about your move — we'll handle the currency math from here.</p>
+  </div>
+
+  <form method="POST" action="{{ url_for('signUp') }}">
+
+    <fieldset>
+      <legend>Account</legend>
+      <label>Email
+        <input type="email" name="email" required>
+      </label>
+      <label>Password
+        <input type="password" name="password" required>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Where you're moving between</legend>
+      <div class="row-2">
+        <label>Home country
+          <select name="home_country" id="homeCountry" required>
+            <option value="" disabled selected>Select</option>
+            {% for country in countries %}
+            <option value="{{ country }}">{{ country }}</option>
+            {% endfor %}
+          </select>
+          <span class="currency-hint" id="homeCurrencyHint"></span>
+        </label>
+        <label>Destination country
+          <select name="destination_country" id="destCountry" required>
+            <option value="" disabled selected>Select</option>
+            {% for country in countries %}
+            <option value="{{ country }}">{{ country }}</option>
+            {% endfor %}
+          </select>
+          <span class="currency-hint" id="destCurrencyHint"></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>What brings you there</legend>
+      <div class="toggle-group">
+        <label class="toggle-option">
+          <input type="radio" name="user_type" value="student" required>
+          <span>Studying</span>
+        </label>
+        <label class="toggle-option">
+          <input type="radio" name="user_type" value="work" required>
+          <span>Working</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <button type="submit">Continue</button>
+  </form>
+  
+  <form method="POST" action="{{ url_for('homePage') }}">
+    <button type="submit">Log In</button>
+
+  </form>
+
+
+  <p class="footnote">Your currencies are set once here and used everywhere in Budgie — no need to convert manually again.</p>
+
+</div>
+
+<script>
+  // countries -> currency map, passed in from Flask so there's one source of truth
+  const countryCurrency = {{ countries | tojson }};
+
+  const homeSelect = document.getElementById('homeCountry');
+  const destSelect = document.getElementById('destCountry');
+  const homeHint = document.getElementById('homeCurrencyHint');
+  const destHint = document.getElementById('destCurrencyHint');
+
+  homeSelect.addEventListener('change', () => {
+    homeHint.textContent = countryCurrency[homeSelect.value]
+      ? `Currency: ${countryCurrency[homeSelect.value]}`
+      : '';
+  });
+
+  destSelect.addEventListener('change', () => {
+    destHint.textContent = countryCurrency[destSelect.value]
+      ? `Currency: ${countryCurrency[destSelect.value]}`
+      : '';
+  });
+</script>
+
+</body>
+</html>

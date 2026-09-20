@@ -146,14 +146,36 @@
     button{ grid-column: span 2; }
   }
 
-  /* ---------- category sections ---------- */
+  /* ---------- section header + grand total ---------- */
+
+  .section-header{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
 
   .section-title{
     font-family: 'Fraunces', serif;
     font-weight: 500;
     font-size: 1.4rem;
-    margin: 0 0 22px;
+    margin: 0;
   }
+
+  .grand-total{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--sage);
+    background: var(--bg-deep);
+    border: 1px solid var(--thread);
+    border-radius: 12px;
+    padding: 8px 16px;
+  }
+
+  /* ---------- category sections ---------- */
 
   .category-block{
     margin-bottom: 30px;
@@ -214,6 +236,28 @@
 
   tr:hover td{ background: rgba(124, 138, 92, 0.06); }
 
+  .converted{
+    color: var(--ink-soft);
+    font-size: 0.85em;
+  }
+
+  .delete-btn{
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+
+  .delete-btn:hover{
+    color: var(--rust);
+    background: rgba(181, 105, 74, 0.1);
+  }
+
   .empty{
     color: var(--ink-soft);
     font-size: 0.9rem;
@@ -225,7 +269,7 @@
 <body>
 <div class="page">
 
-  <a class="back" href="/">&larr; back to budgie</a>
+  <a class="back" href="/home">&larr; back to budgie</a>
 
   <div class="panel">
     <h2>Log an expense</h2>
@@ -260,13 +304,28 @@
     </form>
   </div>
 
-  <h1 class="section-title">Your expenses</h1>
+  {% set grand_total = namespace(value=0) %}
+  {% for category, items in grouped.items() %}
+    {% for e in items %}
+      {% set grand_total.value = grand_total.value + e['converted_amount'] %}
+    {% endfor %}
+  {% endfor %}
+
+  <div class="section-header">
+    <h1 class="section-title">Your expenses</h1>
+    {% if destination_currency %}
+      <span class="grand-total">Total: {{ grand_total.value | round(2) }} {{ destination_currency }}</span>
+    {% endif %}
+  </div>
 
   {% for category, items in grouped.items() %}
     <div class="category-block">
       <div class="category-head">
         <h3><span class="dot"></span>{{ category }}</h3>
-        <span class="subtotal">{{ items | sum(attribute='amount') | round(2) }}</span>
+        <span class="subtotal">
+          {{ items | sum(attribute='converted_amount') or items | sum(attribute='amount') | round(2) }}
+          {{ destination_currency }}
+        </span>
       </div>
       <table>
         <tr>
@@ -274,16 +333,24 @@
           <th>Amount</th>
           <th>Currency</th>
           <th>Note</th>
+          <th></th>
         </tr>
         {% for e in items %}
         <tr>
           <td>{{ e['date'] }}</td>
-          <td>{{ e['amount'] }}</td>
+          <td>
+            {{ e['amount'] }}
+            {% if e['converted_amount'] %}
+              <span class="converted">({{ e['converted_amount'] }} {{ destination_currency }})</span>
+            {% endif %}
+          </td>
           <td>{{ e['currency'] }}</td>
           <td>{{ e['note'] }}</td>
-          <td><form method="POST" action="{{ url_for('delete_expense', expense_id=e['id']) }}" style="display:inline;">
-        <button type="submit" class="delete-btn" title="Delete this entry">&times;</button>
-      </form></td>
+          <td>
+            <form method="POST" action="{{ url_for('delete_expense', expense_id=e['id']) }}" style="display:inline;">
+              <button type="submit" class="delete-btn" title="Delete this entry">&times;</button>
+            </form>
+          </td>
         </tr>
         {% endfor %}
       </table>
