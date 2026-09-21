@@ -47,19 +47,17 @@ def get_rates(base_currency):
     EXCHANGE_RATE_CACHE[base_currency] = {"rates": rates, "fetched_at": datetime.now()}
     return rates
 
-
 def convert(amount, from_currency, to_currency):
     if from_currency == to_currency:
-        return amount, False  # no conversion needed; still a real number for summing
+        return round(amount, 2)
     try:
         rates = get_rates(from_currency)
         rate = rates.get(to_currency)
-        if rate:
-            return round(amount * rate, 2), True
-        return amount, False
+        return round(amount * rate, 2) if rate else round(amount, 2)
     except requests.RequestException:
-        return amount, False
+        return round(amount, 2)
 
+    
 @app.route("/", methods=["GET", "POST"])
 def signUp():
     if request.method == "POST":
@@ -87,6 +85,8 @@ def signUp():
                 )
             )
             con.commit()
+        except:
+            print("user exists or invalid creds")
         finally:
             con.close()
 
@@ -141,7 +141,7 @@ def expenses():
                     session["user_id"],
                     request.form["category"],
                     request.form["amount"],
-                    request.form.get("currency", "EUR"),
+                    request.form.get("currency"),
                     request.form.get("note", ""),
                     datetime.now().strftime("%Y-%m-%d"),
                 )
@@ -150,23 +150,35 @@ def expenses():
             return redirect(url_for("expenses"))
 
         current_user = con.execute(
-            "SELECT * FROM users WHERE id = ?", (session["user_id"],)
-        ).fetchone()
+            "SELECT * FROM users WHERE id = ?", (session["user_id"],)).fetchone()
+        
         destination_currency = current_user["home_currency"] if current_user else None
-
+        home_currency = current_user["destination_currency"] if current_user else None
         rows = con.execute(
             "SELECT * FROM expenses WHERE user_id = ? ORDER BY category, date DESC",
-            (session["user_id"],)
-        ).fetchall()
+            (session["user_id"],)).fetchall()
 
+        
         grouped = {}
+        grand_total_destination = 0
+        grand_total_home = 0
+
         for row in rows:
             row = dict(row)
-            converted, was_converted = convert(row["amount"], row["currency"], destination_currency)
-            row["converted_amount"] = converted
-            row["was_converted"] = was_converted
+            row["converted_amount"] = convert(row["amount"], row["currency"], destination_currency)
+            grand_total_destination += row["converted_amount"]
+            grand_total_home += convert(row["amount"], row["currency"], home_currency)
             grouped.setdefault(row["category"], []).append(row)
-        return render_template("expenses.html", grouped=grouped, destination_currency=destination_currency)
+
+        return render_template(
+            "expenses.html",
+            grouped=grouped,
+            home_currency=home_currency,
+            destination_currency=destination_currency,
+            grand_total_destination=round(grand_total_destination, 2),
+            grand_total_home=round(grand_total_home, 2),
+        )
+
     finally:
         con.close()
 
@@ -185,8 +197,32 @@ def delete_expense(expense_id):
         con.close()
     return redirect(url_for("expenses"))
 
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profilePage():
+    if request.method=="GET":
+        try:
+            con=connect_db()
+            user = con.execute("SELECT * FROM users WHERE id = ?", (session["user_id"],)).fetchone()
+        finally:
+            con.close()
+    return render_template("profile.html", user=user)
+
+
+@app.route("/profile/delete", methods=["POST", "GET"])
+@login_required
+def delete_account():
+    try:
+        con=connect_db()
+        con.execute("DELETE FROM expenses WHERE id= ?", (session["user_id"],)) #remove data
+        con.execute("DELETE FROM users WHERE id= ?", (session["user_id"],)) #remove acc
+    finally:
+        con.commit()
+        con.close()
+    session.pop("user_id", None)
+    return redirect(url_for("signUp"))
 
 init_db()
-
 if __name__ == "__main__":
     app.run(debug=True)
+#rohan.kulkarni0807@gmail.com

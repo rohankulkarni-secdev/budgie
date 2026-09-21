@@ -264,6 +264,9 @@
 </style>
 </head>
 <body>
+  
+  <a href="{{ url_for('profilePage') }}" style="position: absolute; top: 24px; left: 28px; color: var(--ink-soft);
+          text-decoration: none; font-size: 0.85rem; border-bottom: 1px dashed var(--thread);">Profile</a>
   <a href="{{ url_for('logout') }}"
    style="position: absolute; top: 24px; right: 28px; color: var(--ink-soft);
           text-decoration: none; font-size: 0.85rem; border-bottom: 1px dashed var(--thread);">
@@ -289,8 +292,8 @@
 
     <a href="/insights" class="node top" data-title="Insights" data-desc="See where your spending adds up, and where it doesn't need to.">Insights</a>
     <a href="/log" class="node right" data-title="Logs" data-desc="Every expense, sorted and searchable by category.">Logs</a>
-    <a href="/dashboard" class="node bottom" data-title="Dashboard" data-desc="Your month at a glance — balance, trends, and what's left.">Dashboard</a>
-    <a href="/help" class="node left" data-title="Help!" data-desc="Country-specific guidance — visas, university steps, local rules.">Help!</a>
+    <a href="/dashboard" class="node bottom" data-title="Dashboard" data-desc="Your month at a glance: balance, trends, and what's left.">Dashboard</a>
+    <a href="/help" class="node left" data-title="Help!" data-desc="Country-specific guidance: visas, university steps, local rules.">Help!</a>
   </div>
 
   <footer>made for students finding their way</footer>
