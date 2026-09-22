@@ -75,8 +75,8 @@ budgie/
 - [ ] Dashboard with monthly totals and balance
 - [ ] Insights with spending breakdowns and suggestions
 - [ ] Help! page with country-specific rules and resources
-- [ ] live currency conversion
-- [ ] Login authentication and region selection to retrieve region specific data (APIs)
+- [x] live currency conversion
+- [x] Login authentication and region selection to retrieve region specific data (APIs)
 
 ## Contributing
 
