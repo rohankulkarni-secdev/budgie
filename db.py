@@ -25,7 +25,9 @@ def init_db():
             home_currency TEXT NOT NULL,
             destination_country TEXT NOT NULL,
             destination_currency TEXT NOT NULL,
-            user_type TEXT NOT NULL
+            user_type TEXT NOT NULL,
+            budget INTEGER NOT NULL,
+            savings INTEGER NOT NULL DEFAULT 0
         )""")
     
     con.commit()

@@ -66,14 +66,15 @@ def signUp():
         home_country = request.form["home_country"]
         destination_country = request.form["destination_country"]
         user_type = request.form["user_type"]
+        budget = request.form["budget"]
 
         con = connect_db()
         try:
             con.execute(
                 """INSERT INTO users
                    (email, password_hash, home_country, home_currency,
-                    destination_country, destination_currency, user_type)
-                   VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                    destination_country, destination_currency, user_type, budget, savings)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 (
                     email,
                     generate_password_hash(password),
@@ -82,11 +83,11 @@ def signUp():
                     destination_country,
                     COUNTRY_CURRENCY[destination_country],
                     user_type,
+                    budget,
+                    budget,
                 )
             )
             con.commit()
-        except:
-            print("user exists or invalid creds")
         finally:
             con.close()
 
@@ -146,30 +147,39 @@ def expenses():
                     datetime.now().strftime("%Y-%m-%d"),
                 )
             )
+            
             con.commit()
             return redirect(url_for("expenses"))
 
         current_user = con.execute(
             "SELECT * FROM users WHERE id = ?", (session["user_id"],)).fetchone()
-        
+
+        budget = current_user["budget"] if current_user else None
         destination_currency = current_user["home_currency"] if current_user else None
         home_currency = current_user["destination_currency"] if current_user else None
         rows = con.execute(
             "SELECT * FROM expenses WHERE user_id = ? ORDER BY category, date DESC",
             (session["user_id"],)).fetchall()
-
+        
         
         grouped = {}
         grand_total_destination = 0
         grand_total_home = 0
+        savings = 0
 
         for row in rows:
             row = dict(row)
             row["converted_amount"] = convert(row["amount"], row["currency"], destination_currency)
             grand_total_destination += row["converted_amount"]
             grand_total_home += convert(row["amount"], row["currency"], home_currency)
+            savings = budget - grand_total_home
+            print(savings)
+            con.execute("UPDATE users SET savings = ? where id = ?", (savings,session["user_id"]))
+            con.commit()
+
             grouped.setdefault(row["category"], []).append(row)
 
+        
         return render_template(
             "expenses.html",
             grouped=grouped,
@@ -188,6 +198,13 @@ def expenses():
 def delete_expense(expense_id):
     con = connect_db()
     try:
+        current_user = con.execute("SELECT * FROM users WHERE id = ?", (session["user_id"],)).fetchone()
+        home_currency = current_user["destination_currency"] if current_user else None
+        expense = con.execute("SELECT * FROM expenses WHERE id = ? AND user_id = ?", (expense_id, session["user_id"])).fetchone()
+        amount_spent = convert(expense["amount"], expense["currency"], home_currency)
+        
+        con.execute("UPDATE users SET savings = savings + ? WHERE id = ?", (amount_spent,session["user_id"]))
+        con.commit()
         con.execute(
             "DELETE FROM expenses WHERE id = ? AND user_id = ?",
             (expense_id, session["user_id"])
