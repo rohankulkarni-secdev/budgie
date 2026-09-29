@@ -6,6 +6,8 @@ A budget and settling-in companion for international students — track your exp
 
 - **Logs** — log expenses by category (Food, Rent, Transport, Entertainment, Groceries, Other), with support for all currencies (live conversion using exchangeRate API)
 - **Savings system** - Keep track of monthly savings and/or losses.
+
+  
   ----------- YET TO BE WORKED ON -----------------
 - **Dashboard** — a monthly overview of your spending and balance
 - **Insights** — see which categories are eating your budget and what to consider cutting
@@ -49,22 +51,7 @@ python app.py
 
 Then open `http://localhost:5000` in your browser.
 
-## Project structure
 
-```
-budgie/
-├── app.py                 # Flask routes and app logic
-├── requirements.txt
-├── budget.db               # SQLite database (created on first run, gitignored)
-├── templates/
-│   ├── home.html            # animated wheel navigation
-│   ├── expenses.html        # log + view expenses (Logs)
-│   ├── dashboard.html
-│   ├── insights.html
-│   └── help.html
-└── static/
-    └── (css/js assets, if split out from templates)
-```
 
 ## Roadmap
 
@@ -77,9 +64,8 @@ budgie/
 - [x] live currency conversion
 - [x] Login authentication and region selection to retrieve region specific data (APIs)
 
-## Contributing
 
-This is currently a personal/portfolio project and not yet open for external contributions, but suggestions and issues are welcome.
+This is currently a personal/portfolio project.
 
 ## License
 
