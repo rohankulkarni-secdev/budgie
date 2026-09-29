@@ -135,19 +135,37 @@ def expenses():
     con = connect_db()
     try:
         if request.method == "POST":
-            con.execute(
-                """INSERT INTO expenses (user_id, category, amount, currency, note, date)
-                   VALUES (?, ?, ?, ?, ?, ?)""",
-                (
-                    session["user_id"],
-                    request.form["category"],
-                    request.form["amount"],
-                    request.form.get("currency"),
-                    request.form.get("note", ""),
-                    datetime.now().strftime("%Y-%m-%d"),
+            if request.form["date"]:
+                con.execute(
+                    """INSERT INTO expenses (user_id, category, amount, currency, note, date)
+                    VALUES (?, ?, ?, ?, ?, ?)""",
+                    (
+
+                        session["user_id"],
+                        request.form["category"],
+                        request.form["amount"],
+                        request.form.get("currency"),
+                        request.form.get("note", ""),
+                        request.form["date"],
+                        
+                    )
                 )
-            )
-            
+            else:
+                con.execute("""INSERT INTO expenses (user_id, category, amount, currency, note, date)
+                                    VALUES (?, ?, ?, ?, ?, ?)""",
+                                    (
+                
+                                        session["user_id"],
+                                        request.form["category"],
+                                        request.form["amount"],
+                                        request.form.get("currency"),
+                                        request.form.get("note", ""),
+                                        datetime.now().strftime("%Y-%m-%d"),
+
+                                        
+                                    )
+                                )
+                
             con.commit()
             return redirect(url_for("expenses"))
 
