@@ -210,7 +210,7 @@ def expenses():
     finally:
         con.close()
 
-
+#this is a comment just for test
 @app.route("/log/delete/<int:expense_id>", methods=["POST"])
 @login_required
 def delete_expense(expense_id):
