@@ -6,17 +6,20 @@
 <title>Logs · Budgie</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #F3ECDF;
-    --bg-deep: #E7DCC4;
-    --ink: #362F24;
-    --ink-soft: #6B5F4C;
-    --sage: #7C8A5C;
-    --sage-soft: #97A375;
-    --rust: #B5694A;
-    --thread: #C9BFA6;
+    --bg: #F2F4F3;
+    --bg-deep: #A9927D;
+    --ink: #0A0908;
+    --ink-soft: #22333B;
+    --sage: #22333B;
+    --sage-soft: #A9927D;
+    --rust: #22333B;
+    --thread: rgba(34, 51, 59, 0.22);
+    --pink: #5E503F;
+    --powder: #A9927D;
+    --aqua: #F2F4F3;
   }
 
   *{ box-sizing: border-box; }
@@ -25,19 +28,9 @@
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Work Sans', -apple-system, sans-serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     padding: 48px 20px 80px;
     position: relative;
-  }
-
-  body::before{
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
-    background-size: 22px 22px;
-    opacity: 0.035;
   }
 
   .page{
@@ -58,7 +51,7 @@
   a.back:hover{ color: var(--sage); border-color: var(--sage-soft); }
 
   h1{
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-optical-sizing: auto;
     font-weight: 600;
     font-size: clamp(1.7rem, 4vw, 2.2rem);
@@ -74,7 +67,7 @@
   }
 
   .panel h2{
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
     font-size: 1.15rem;
     margin: 0 0 18px;
@@ -108,7 +101,7 @@
   }
 
   select, input[type="date"], input[type="number"], input[type="text"]{
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-size: 0.95rem;
     color: var(--ink);
     background: rgba(255, 255, 255, 0.28);
@@ -123,7 +116,7 @@
 
   select:focus, input:focus{
     border-color: var(--sage);
-    box-shadow: 0 0 0 3px rgba(124, 138, 92, 0.12);
+    box-shadow: 0 0 0 3px rgba(34, 51, 59, 0.2);
     background: rgba(255, 255, 255, 0.42);
   }
 
@@ -133,7 +126,7 @@
     min-width: 0;
     width: 100%;
     height: 64px;
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
     font-size: 0.95rem;
     background: var(--sage);
@@ -142,11 +135,11 @@
     border-radius: 12px;
     padding: 12px 18px;
     cursor: pointer;
-    box-shadow: 0 10px 18px rgba(124, 138, 92, 0.18);
+    box-shadow: 0 10px 18px rgba(10, 9, 8, 0.14);
     transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
   }
 
-  .submit-button:hover{ background: #6d7a4f; box-shadow: 0 12px 20px rgba(124, 138, 92, 0.22); }
+  .submit-button:hover{ background: var(--aqua); color: var(--ink); box-shadow: 0 12px 20px rgba(10, 9, 8, 0.18); }
   .submit-button:active{ transform: scale(0.98); }
 
   @media (max-width: 640px){
@@ -165,14 +158,14 @@
   }
 
   .section-title{
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
     font-size: 1.4rem;
     margin: 0;
   }
 
   .grand-total{
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
     font-size: 1.05rem;
     color: var(--sage);
@@ -184,7 +177,7 @@
 
   .grand-total .secondary{
     color: var(--ink-soft);
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-size: 0.85em;
   }
 
@@ -202,7 +195,7 @@
   }
 
   .category-head h3{
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
     font-size: 1.05rem;
     margin: 0;
@@ -215,7 +208,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--sage-soft);
+    background: var(--pink);
     display: inline-block;
   }
 
@@ -245,7 +238,7 @@
     color: var(--ink);
   }
 
-  tr:hover td{ background: rgba(124, 138, 92, 0.06); }
+  tr:hover td{ background: rgba(169, 146, 125, 0.16); }
 
   .converted{
     color: var(--ink-soft);

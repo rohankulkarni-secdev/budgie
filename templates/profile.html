@@ -6,17 +6,20 @@
 <title>Profile · Budgie</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #F3ECDF;
-    --bg-deep: #E7DCC4;
-    --ink: #362F24;
-    --ink-soft: #6B5F4C;
-    --sage: #7C8A5C;
-    --sage-soft: #97A375;
-    --rust: #B5694A;
-    --thread: #C9BFA6;
+    --bg: #F2F4F3;
+    --bg-deep: #A9927D;
+    --ink: #0A0908;
+    --ink-soft: #22333B;
+    --sage: #22333B;
+    --sage-soft: #A9927D;
+    --rust: #22333B;
+    --thread: rgba(34, 51, 59, 0.22);
+    --pink: #5E503F;
+    --powder: #A9927D;
+    --aqua: #F2F4F3;
   }
 
   *{ box-sizing: border-box; }
@@ -25,20 +28,10 @@
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Work Sans', -apple-system, sans-serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     padding: 48px 20px 80px;
     position: relative;
     min-height: 100vh;
-  }
-
-  body::before{
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
-    background-size: 22px 22px;
-    opacity: 0.035;
   }
 
   .page{
@@ -69,19 +62,19 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: var(--sage);
-    color: var(--bg);
+    background: var(--powder);
+    color: var(--ink);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
     font-size: 1.4rem;
     flex-shrink: 0;
   }
 
   h1{
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-optical-sizing: auto;
     font-weight: 600;
     font-size: clamp(1.6rem, 4vw, 2rem);
@@ -118,7 +111,7 @@
   }
 
   .field-value{
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
     font-size: 1rem;
     color: var(--ink);
@@ -129,7 +122,7 @@
     display: inline-block;
     background: var(--sage);
     color: var(--bg);
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 500;
     font-size: 0.75rem;
     padding: 4px 12px;
@@ -141,13 +134,13 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
   }
 
   .currency-pair .arrow{
     color: var(--sage);
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 400;
   }
 
@@ -160,7 +153,7 @@
   .btn{
     flex: 1;
     text-align: center;
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
     font-size: 0.95rem;
     text-decoration: none;
@@ -174,7 +167,7 @@
     color: var(--bg);
     border: 1px solid var(--sage);
   }
-  .btn-primary:hover{ background: #6d7a4f; }
+  .btn-primary:hover{ background: var(--aqua); color: var(--ink); border-color: var(--aqua); }
 
   .btn-ghost{
     background: transparent;

@@ -6,17 +6,20 @@
 <title>Budgie</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #F3ECDF;
-    --bg-deep: #E7DCC4;
-    --ink: #362F24;
-    --ink-soft: #6B5F4C;
-    --sage: #7C8A5C;
-    --sage-soft: #97A375;
-    --rust: #B5694A;
-    --thread: #C9BFA6;
+    --bg: #F2F4F3;
+    --bg-deep: #A9927D;
+    --ink: #0A0908;
+    --ink-soft: #22333B;
+    --sage: #22333B;
+    --sage-soft: #A9927D;
+    --rust: #22333B;
+    --thread: rgba(34, 51, 59, 0.22);
+    --pink: #5E503F;
+    --powder: #A9927D;
+    --aqua: #F2F4F3;
   }
 
   *{ box-sizing: border-box; }
@@ -30,7 +33,7 @@
   body{
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Work Sans', -apple-system, sans-serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -41,24 +44,13 @@
     padding: 40px 20px;
   }
 
-  /* faint paper-grain texture, keeps the beige from feeling flat */
-  body::before{
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
-    background-size: 22px 22px;
-    opacity: 0.035;
-  }
-
   .brand{
     text-align: center;
     margin-bottom: 8px;
   }
 
   .brand h1{
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-optical-sizing: auto;
     font-weight: 600;
     font-size: clamp(2.2rem, 5vw, 3rem);
@@ -131,7 +123,7 @@
 
   .hub-text .hub-title{
     display: block;
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
     font-size: 1.15rem;
     color: var(--ink);
@@ -145,14 +137,14 @@
     margin: -54px;
     border-radius: 50%;
     background: var(--bg);
-    border: 1.5px solid var(--sage-soft);
+    border: 1.5px solid var(--pink);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     text-decoration: none;
     color: var(--ink);
-    font-family: 'Fraunces', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
     font-size: 0.95rem;
     padding: 8px;
@@ -167,14 +159,14 @@
   .node.left{   top: 50%; left: 0; }
 
   .node:hover, .node:focus-visible{
-    border-color: var(--sage);
+    border-color: var(--ink);
     background: var(--bg-deep);
-    box-shadow: 0 4px 18px rgba(54, 47, 36, 0.12);
+    box-shadow: 0 4px 18px rgba(10, 9, 8, 0.14);
     outline: none;
   }
 
   .node:focus-visible{
-    box-shadow: 0 0 0 3px rgba(124, 138, 92, 0.35);
+    box-shadow: 0 0 0 3px rgba(34, 51, 59, 0.35);
   }
 
   /* ---------- entrance choreography ---------- */

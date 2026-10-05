@@ -257,7 +257,87 @@ def delete_account():
     session.pop("user_id", None)
     return redirect(url_for("signUp"))
 
+
+@app.route("/dashboard", methods=["GET"])
+@login_required
+def dashboard():
+    con = connect_db()
+    try:
+        user = con.execute(
+            "SELECT * FROM users WHERE id = ?", (session["user_id"],)
+        ).fetchone()
+        expenses = con.execute(
+            "SELECT * FROM expenses WHERE user_id = ? ORDER BY date",
+            (session["user_id"],),
+        ).fetchall()
+    finally:
+        con.close()
+
+    currency = user["home_currency"]
+    category_totals = {}
+    month_totals = {}
+    day_totals = {}
+    day_counts = {}
+    total_spent = 0
+    total_eur = 0
+    total_inr = 0
+
+    for expense in expenses:
+        amount = convert(expense["amount"], expense["currency"], currency)
+        total_eur += convert(expense["amount"], expense["currency"], "EUR")
+        total_inr += convert(expense["amount"], expense["currency"], "INR")
+        expense_date = datetime.strptime(expense["date"], "%Y-%m-%d")
+        month_key = expense_date.strftime("%Y-%m")
+        day_key = expense_date.strftime("%Y-%m-%d")
+
+        category_totals[expense["category"]] = (
+            category_totals.get(expense["category"], 0) + amount
+        )
+        month_totals[month_key] = month_totals.get(month_key, 0) + amount
+        day_totals[day_key] = day_totals.get(day_key, 0) + amount
+        day_counts[day_key] = day_counts.get(day_key, 0) + 1
+        total_spent += amount
+
+    months = [
+        {
+            "label": datetime.strptime(month, "%Y-%m").strftime("%b %Y"),
+            "total": round(amount, 2),
+        }
+        for month, amount in sorted(month_totals.items())
+    ]
+    categories = [
+        {"label": category, "total": round(amount, 2)}
+        for category, amount in sorted(
+            category_totals.items(), key=lambda item: item[1], reverse=True
+        )
+    ]
+    high_days = [
+        {
+            "label": datetime.strptime(day, "%Y-%m-%d").strftime("%b %d, %Y"),
+            "total": round(amount, 2),
+            "count": day_counts[day],
+        }
+        for day, amount in sorted(
+            day_totals.items(), key=lambda item: item[1], reverse=True
+        )[:5]
+    ]
+    average_monthly = total_spent / len(months) if months else 0
+
+    dashboard_data = {
+        "currency": currency,
+        "total": round(total_spent, 2),
+        "total_eur": round(total_eur, 2),
+        "total_inr": round(total_inr, 2),
+        "expense_count": len(expenses),
+        "average_monthly": round(average_monthly, 2),
+        "months": months,
+        "categories": categories,
+        "high_days": high_days,
+    }
+    return render_template(
+        "dashboard.html", user=user, dashboard_data=dashboard_data
+    )
+
 init_db()
 if __name__ == "__main__":
     app.run(debug=True)
-#rohan.kulkarni0807@gmail.com

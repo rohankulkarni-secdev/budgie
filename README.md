@@ -9,7 +9,7 @@ A budget and settling-in companion for international students — track your exp
 
   
   ----------- YET TO BE WORKED ON -----------------
-- **Dashboard** — a monthly overview of your spending and balance
+- **Dashboard** — monthly spending, category breakdowns, high-spend days, and expense trends
 - **Insights** — see which categories are eating your budget and what to consider cutting
 - **Help!** — pick a country and get a list of relevant rules, from university requirements to visa documents to local norms
 
@@ -58,7 +58,7 @@ Then open `http://localhost:5000` in your browser.
 - [x] Homepage with animated navigation wheel
 - [x] Log expenses by category
 - [x] Delete logged expenses
-- [ ] Dashboard with monthly totals and balance
+- [x] Dashboard with monthly totals, category breakdowns, high-spend days, and trends
 - [ ] Insights with spending breakdowns and suggestions
 - [ ] Help! page with country-specific rules and resources
 - [x] live currency conversion
