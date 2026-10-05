@@ -7,9 +7,9 @@ A budget and settling-in companion for international students — track your exp
 - **Logs** — log expenses by category (Food, Rent, Transport, Entertainment, Groceries, Other), with support for all currencies (live conversion using exchangeRate API)
 - **Savings system** - Keep track of monthly savings and/or losses.
 - **Budget System** - Set budget for user.
-  
-  ----------- YET TO BE WORKED ON -----------------
 - **Dashboard** — monthly spending, category breakdowns, high-spend days, and expense trends
+
+  ----------- YET TO BE WORKED ON -----------------
 - **Insights** — see which categories are eating your budget and what to consider cutting
 - **Help!** — pick a country and get a list of relevant rules, from university requirements to visa documents to local norms
 
@@ -51,9 +51,7 @@ python app.py
 
 Then open `http://localhost:5000` in your browser.
 
-
-
-This is currently a personal/portfolio project.
+This is just a personal/portfolio project.
 
 ## License
 
