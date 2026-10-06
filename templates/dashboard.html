@@ -423,8 +423,12 @@
     .trend-axis-label{ font-size: 10px; }
   }
 </style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bloom-field.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+<script src="{{ url_for('static', filename='js/bloom-field.js') }}" defer></script>
 </head>
 <body>
+{% include "_navbar.html" %}
 <main class="page">
   <div class="topbar">
     <a class="back" href="{{ url_for('homePage') }}">&larr; back to budgie</a>
@@ -520,7 +524,7 @@
 
 <script>
   const dashboardData = {{ dashboard_data | tojson }};
-  const palette = ["#0A0908", "#22333B", "#5E503F", "#A9927D", "#71818A"];
+  const palette = ["#d4d4cc", "#b8b8b0", "#92928a", "#707068", "#50504c"];
   const currencyFormatter = new Intl.NumberFormat(undefined, {
     style: "currency",
     currency: dashboardData.currency,

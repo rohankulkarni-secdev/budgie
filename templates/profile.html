@@ -176,8 +176,12 @@
   }
   .btn-ghost:hover{ border-color: var(--rust); }
 </style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bloom-field.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+<script src="{{ url_for('static', filename='js/bloom-field.js') }}" defer></script>
 </head>
 <body>
+{% include "_navbar.html" %}
 <div class="page">
 
   <a class="back" href="{{ url_for('homePage') }}">&larr; back to budgie</a>

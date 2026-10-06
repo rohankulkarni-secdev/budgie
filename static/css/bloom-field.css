@@ -1,0 +1,102 @@
+:root {
+  color-scheme: dark;
+  --bg: rgba(18, 18, 17, 0.78);
+  --bg-deep: rgba(18, 18, 17, 0.76);
+  --ink: #f2f2ee;
+  --ink-soft: #b8b8b0;
+  --sage: #c5c5bb;
+  --sage-soft: #777770;
+  --rust: #deded6;
+  --thread: rgba(245, 245, 237, 0.16);
+  --pink: #8c8c83;
+  --powder: #343432;
+  --aqua: #e4e4dd;
+  --white-wash: rgba(18, 18, 17, 0.65);
+}
+
+body {
+  isolation: isolate;
+  background: transparent;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #000000;
+  background-image: var(
+    --bloom-field-image,
+    radial-gradient(circle at 65.34% 44.62%, rgba(52, 52, 50, 1) 0%, rgba(52, 52, 50, 0.844) 8.53%, rgba(52, 52, 50, 0.5) 17.05%, rgba(52, 52, 50, 0.156) 25.58%, rgba(52, 52, 50, 0) 34.1%),
+    radial-gradient(circle at 28.07% 74.48%, rgba(18, 18, 17, 1) 0%, rgba(18, 18, 17, 0.844) 11.15%, rgba(18, 18, 17, 0.5) 22.3%, rgba(18, 18, 17, 0.156) 33.45%, rgba(18, 18, 17, 0) 44.6%),
+    radial-gradient(circle at 52.42% 19.94%, rgba(52, 52, 50, 1) 0%, rgba(52, 52, 50, 0.844) 14.13%, rgba(52, 52, 50, 0.5) 28.25%, rgba(52, 52, 50, 0.156) 42.38%, rgba(52, 52, 50, 0) 56.5%),
+    radial-gradient(circle at 80.31% 84.47%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.844) 17.27%, rgba(0, 0, 0, 0.5) 34.55%, rgba(0, 0, 0, 0.156) 51.82%, rgba(0, 0, 0, 0) 69.1%)
+  );
+}
+
+.card,
+.panel,
+.summary-card,
+.hub,
+.node {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+input,
+select,
+textarea {
+  color-scheme: dark;
+}
+
+input::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.75;
+}
+
+.node:focus-visible {
+  box-shadow: 0 0 0 3px rgba(245, 245, 237, 0.4);
+}
+
+select,
+input[type="date"],
+input[type="number"],
+input[type="text"] {
+  background: rgba(18, 18, 17, 0.58);
+  box-shadow: inset 0 1px 0 rgba(245, 245, 237, 0.06);
+}
+
+select:focus,
+input:focus {
+  background: rgba(18, 18, 17, 0.82);
+  box-shadow: 0 0 0 3px rgba(245, 245, 237, 0.12);
+}
+
+tr:hover td {
+  background: rgba(245, 245, 237, 0.06);
+}
+
+.pie {
+  border-color: rgba(245, 245, 237, 0.18);
+}
+
+.bar-track,
+.rank-track {
+  background: rgba(245, 245, 237, 0.1);
+  border-color: rgba(245, 245, 237, 0.12);
+}
+
+.empty-state {
+  background: rgba(18, 18, 17, 0.58);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    background-image:
+      radial-gradient(circle at 65.34% 44.62%, rgba(52, 52, 50, 1) 0%, rgba(52, 52, 50, 0.844) 8.53%, rgba(52, 52, 50, 0.5) 17.05%, rgba(52, 52, 50, 0.156) 25.58%, rgba(52, 52, 50, 0) 34.1%),
+      radial-gradient(circle at 28.07% 74.48%, rgba(18, 18, 17, 1) 0%, rgba(18, 18, 17, 0.844) 11.15%, rgba(18, 18, 17, 0.5) 22.3%, rgba(18, 18, 17, 0.156) 33.45%, rgba(18, 18, 17, 0) 44.6%),
+      radial-gradient(circle at 52.42% 19.94%, rgba(52, 52, 50, 1) 0%, rgba(52, 52, 50, 0.844) 14.13%, rgba(52, 52, 50, 0.5) 28.25%, rgba(52, 52, 50, 0.156) 42.38%, rgba(52, 52, 50, 0) 56.5%),
+      radial-gradient(circle at 80.31% 84.47%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.844) 17.27%, rgba(0, 0, 0, 0.5) 34.55%, rgba(0, 0, 0, 0.156) 51.82%, rgba(0, 0, 0, 0) 69.1%);
+  }
+}

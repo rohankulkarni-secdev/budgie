@@ -1,0 +1,21 @@
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="site-nav-links">
+    {% if request.endpoint != 'homePage' %}
+    <a href="{{ url_for('homePage') }}">Home</a>
+    {% endif %}
+    {% if request.endpoint != 'expenses' %}
+    <a href="{{ url_for('expenses') }}">Logs</a>
+    {% endif %}
+    {% if request.endpoint != 'dashboard' %}
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    {% endif %}
+  </div>
+  {% if session.get('user_id') %}
+  <div class="site-nav-actions">
+    {% if request.endpoint != 'profilePage' %}
+    <a href="{{ url_for('profilePage') }}">Profile</a>
+    {% endif %}
+    <a href="{{ url_for('logout') }}">Log out</a>
+  </div>
+  {% endif %}
+</nav>

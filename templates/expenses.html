@@ -270,8 +270,12 @@
     padding: 20px 0;
   }
 </style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bloom-field.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+<script src="{{ url_for('static', filename='js/bloom-field.js') }}" defer></script>
 </head>
 <body>
+{% include "_navbar.html" %}
 <div class="page">
 
   <a class="back" href="/home">&larr; back to budgie</a>
