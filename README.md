@@ -19,7 +19,7 @@ A budget and settling-in companion for international students — track your exp
 - **Insights** — see which categories are eating your budget and what to consider cutting
 - **Help!** — pick a country and get a list of relevant rules, from university requirements to visa documents to local norms
 
-## Tech stack
+## Tech stack (AI Assisted development for front end UI/UX)
 
 - **Backend:** Flask (Python)
 - **Database:** SQLite3
