@@ -1,6 +1,13 @@
 # budgie
 
-A budget and settling-in companion for international students — track your expenses, see where your money's going, and find country-specific guidance for visas, university steps, and local rules, all in one place.
+
+
+LINK: https://budgie-s0nt.onrender.com/
+
+
+
+A simple budget tracker personal project to continue my SQL and Python practice, and to learn a new framework - Flask.
+This project also helped me collaborate with AI for front end UI/UX development.
 
 ## Features
 
@@ -9,10 +16,7 @@ A budget and settling-in companion for international students — track your exp
 - **Budget System** - Set budget for user.
 - **Dashboard** — monthly spending, category breakdowns, high-spend days, and expense trends
 
-  ----------- YET TO BE WORKED ON -----------------
-- **Help!** — pick a country and get a list of relevant rules, from university requirements to visa documents to local norms
-
-## Tech stack
+## Tech stack (AI Assisted development for front end UI/UX)
 
 - **Backend:** Flask (Python)
 - **Database:** SQLite3
