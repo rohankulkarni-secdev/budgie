@@ -43,7 +43,7 @@
 
   .topbar{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     gap: 16px;
     margin-bottom: 28px;
@@ -244,14 +244,16 @@
     align-content: center;
     justify-items: center;
     text-align: center;
-    padding: 25%;
+    padding: 20%;
     pointer-events: none;
   }
 
   .pie-center strong{
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.78rem;
+    line-height: 1.1;
+    max-width: 100%;
     overflow-wrap: anywhere;
   }
 
@@ -431,13 +433,12 @@
 {% include "_navbar.html" %}
 <main class="page">
   <div class="topbar">
-    <a class="back" href="{{ url_for('homePage') }}">&larr; back to budgie</a>
     <a class="logs-link" href="{{ url_for('expenses') }}">+ Log an expense</a>
   </div>
 
   <header class="heading">
     <div>
-      <div class="eyebrow">Your money, at a glance</div>
+      <div class="eyebrow">Welcome back, {{ user['email'].split('@')[0] }}!</div>
       <h1>Spending dashboard</h1>
       <p>Patterns and highlights from your expense log.</p>
     </div>

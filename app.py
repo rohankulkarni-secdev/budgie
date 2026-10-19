@@ -110,7 +110,7 @@ def loginPage():
 
         if user and check_password_hash(user["password_hash"], password):
             session["user_id"] = user["id"]
-            return redirect(url_for("homePage"))
+            return redirect(url_for("dashboard"))
 
         return render_template("login.html", error="Invalid email or password")
 
@@ -126,7 +126,7 @@ def logout():
 @app.route("/home", methods=["GET", "POST"])
 @login_required
 def homePage():
-    return render_template("home.html")
+    return redirect(url_for("dashboard"))
 
 
 @app.route("/log", methods=["GET", "POST"])
@@ -175,10 +175,33 @@ def expenses():
         budget = current_user["budget"] if current_user else None
         destination_currency = current_user["home_currency"] if current_user else None
         home_currency = current_user["destination_currency"] if current_user else None
-        rows = con.execute(
-            "SELECT * FROM expenses WHERE user_id = ? ORDER BY category, date DESC",
-            (session["user_id"],)).fetchall()
-        
+        month_options = [
+            {
+                "value": row["month"],
+                "label": datetime.strptime(row["month"], "%Y-%m").strftime("%b %Y"),
+            }
+            for row in con.execute(
+                """SELECT DISTINCT substr(date, 1, 7) AS month
+                   FROM expenses WHERE user_id = ? ORDER BY month DESC""",
+                (session["user_id"],),
+            ).fetchall()
+        ]
+        selected_month = request.args.get("month")
+        if selected_month not in {option["value"] for option in month_options}:
+            selected_month = None
+
+        if selected_month:
+            rows = con.execute(
+                """SELECT * FROM expenses
+                   WHERE user_id = ? AND substr(date, 1, 7) = ?
+                   ORDER BY category, date DESC""",
+                (session["user_id"], selected_month),
+            ).fetchall()
+        else:
+            rows = con.execute(
+                "SELECT * FROM expenses WHERE user_id = ? ORDER BY category, date DESC",
+                (session["user_id"],),
+            ).fetchall()
         
         grouped = {}
         grand_total_destination = 0
@@ -205,6 +228,8 @@ def expenses():
             destination_currency=destination_currency,
             grand_total_destination=round(grand_total_destination, 2),
             grand_total_home=round(grand_total_home, 2),
+            month_options=month_options,
+            selected_month=selected_month,
         )
 
     finally:

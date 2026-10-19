@@ -1,8 +1,5 @@
 <nav class="site-nav" aria-label="Main navigation">
   <div class="site-nav-links">
-    {% if request.endpoint != 'homePage' %}
-    <a href="{{ url_for('homePage') }}">Home</a>
-    {% endif %}
     {% if request.endpoint != 'expenses' %}
     <a href="{{ url_for('expenses') }}">Logs</a>
     {% endif %}

@@ -157,6 +157,28 @@
     margin-bottom: 22px;
   }
 
+  .month-filter{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 auto 0 0;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+  }
+
+  .month-filter label{
+    display: block;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .month-filter select{
+    height: auto;
+    max-width: 150px;
+    padding: 8px 10px;
+    font: inherit;
+  }
+
   .section-title{
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
@@ -278,7 +300,7 @@
 {% include "_navbar.html" %}
 <div class="page">
 
-  <a class="back" href="/home">&larr; back to budgie</a>
+  <a class="back" href="{{ url_for('dashboard') }}">&larr; back to dashboard</a>
 
   <div class="panel">
     <h2>Log an expense</h2>
@@ -324,6 +346,15 @@
 
   <div class="section-header">
     <h1 class="section-title">Your expenses</h1>
+    <form class="month-filter" method="GET" action="{{ url_for('expenses') }}">
+      <label for="expense-month">Month</label>
+      <select id="expense-month" name="month" onchange="this.form.submit()">
+        <option value="">All months</option>
+        {% for option in month_options %}
+        <option value="{{ option.value }}" {% if option.value == selected_month %}selected{% endif %}>{{ option.label }}</option>
+        {% endfor %}
+      </select>
+    </form>
     <span class="grand-total">
       Total: {{ grand_total_destination | round(2) }} {{ destination_currency }}
       <span class="secondary">({{ grand_total_home | round(2) }} {{ home_currency }})</span>
